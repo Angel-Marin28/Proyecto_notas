@@ -1,9 +1,27 @@
+import { useState } from "react";
 
 
-function App() {
+const App =() => {
+  //hool -> use .....
+  //stage ->useState
+
+  const [state, setState]= useState("");
+
+
+const handleInputChange =(event) => { 
+setState(event.target.value);
+console.log(state)
+
+ };
+
   return (
     <div className="App">
-      <h1>Hola mundo, este es mi proyecto de "notas"</h1>
+      <h1>proyecto "notas"</h1>
+      <label>
+        input de prueba
+      <input id="PruebaID" name="prueba" type="text" onChange={handleInputChange} value={state} /> 
+      </label>
+
     </div>
   );
 }
