@@ -5,21 +5,34 @@ const App =() => {
   //hool -> use .....
   //stage ->useState
 
-  const [state, setState]= useState("");
+  const [inputsState, setInputsState]= useState({
+    title:"",
+    date:"",
+    note:"",
+  });
 
 
 const handleInputChange =(event) => { 
-setState(event.target.value);
-console.log(state)
-
- };
+ setInputsState({ ...inputsState, [event.target.name]: event.target.value});
+}
 
   return (
     <div className="App">
-      <h1>proyecto "notas"</h1>
+      <h1>Notas</h1>
+
       <label>
-        input de prueba
-      <input id="PruebaID" name="prueba" type="text" onChange={handleInputChange} value={state} /> 
+        Titulo
+      <input id="title" name="title" type="text" onChange={handleInputChange} value={inputsState.title} /> 
+      </label>
+      <br/>
+      <label>
+        Fecha
+      <input id="date" name="date" type="text" onChange={handleInputChange} value={inputsState.date} /> 
+      </label>
+      <br/>
+        <label>
+        Nota
+      <input id="note" name="note" type="text" onChange={handleInputChange} value={inputsState.note} /> 
       </label>
 
     </div>
