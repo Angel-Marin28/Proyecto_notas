@@ -16,6 +16,11 @@ const handleInputChange =(event) => {
  setInputsState({ ...inputsState, [event.target.name]: event.target.value});
 }
 
+
+const handleResetClick = (event) => {
+  setInputsState({ ...setInputsState, title:"", date:"", note:"" });
+};
+
   return (
     <div className="App">
       <h1>Notas</h1>
@@ -33,6 +38,8 @@ const handleInputChange =(event) => {
         <label>
         Nota
       <input id="note" name="note" type="text" onChange={handleInputChange} value={inputsState.note} /> 
+
+        <button className="btn btn-primary me-2" onClick={handleResetClick}>Borrar</button>
       </label>
 
     </div>
