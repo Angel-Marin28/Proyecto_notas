@@ -18,8 +18,11 @@ const App = () => {
     setInputsState({ title: "", date: "", note: "" });
   };
 
+  let notas = JSON.parse(localStorage.getItem("notas")) || [];
   const handleClickGuardar = () => {
-    localStorage.setItem("notas", JSON.stringify(inputsState));
+    notas.push(inputsState);
+    localStorage.setItem("notas", JSON.stringify(notas));
+    handleClickLimpiar();
   };
 
   return (
@@ -27,6 +30,15 @@ const App = () => {
       <div className="row">
         <div className="col">
           <h3>Lista</h3>
+          <ul>
+            {notas.map((nota) => {
+              return (
+                <li>
+                  {nota.title} ({nota.date}) {nota.note}
+                </li>
+              );
+            })}
+          </ul>
         </div>
         <div className="col">
           <h3>Notas</h3>
@@ -85,7 +97,7 @@ const App = () => {
                 style={{ width: "100%" }}
               >
                 Guardar
-              </button> {" "}
+              </button>{" "}
             </span>
           </div>
         </div>
