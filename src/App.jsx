@@ -1,13 +1,18 @@
 import { useState } from "react";
 
 const App = () => {
-  //hool -> use .....
-  //stage ->useState
+  //hook -> use .....
+  //state ->useState
 
   const [inputsState, setInputsState] = useState({
     title: "",
     date: "",
     note: "",
+  });
+
+  const [isSelected, setIsSelected] = useState({
+    status: false,
+    noteSelected: null,
   });
 
   let initialState = JSON.parse(localStorage.getItem("notas")) || [];
@@ -19,34 +24,49 @@ const App = () => {
 
   const handleClickLimpiar = (event) => {
     setInputsState({ title: "", date: "", note: "" });
+    setIsSelected({ status: false, noteSelected: null });
   };
 
   const handleClickGuardar = () => {
     setNotas([...notas, inputsState]);
-    localStorage.setItem("notas", JSON.stringify(...notas, inputsState));
+    localStorage.setItem("notas", JSON.stringify([...notas, inputsState]));
     handleClickLimpiar();
+    setIsSelected({ status: false, noteSelected: null });
   };
 
   const handleRemoveNote = (index) => {
-    const NuevoArreglo = [];
+    const nuevoArreglo = [];
     notas.forEach((nota, i) => {
       if (index !== i) {
-        NuevoArreglo.push(nota);
+        nuevoArreglo.push(nota);
       }
     });
-    localStorage.setItem("notas", JSON.stringify(NuevoArreglo));
-    setNotas(NuevoArreglo);
+    localStorage.setItem("notas", JSON.stringify(nuevoArreglo));
+    setNotas(nuevoArreglo);
   };
+
   const handleClickLimpiarLista = () => {
     setNotas([]);
     localStorage.setItem("notas", JSON.stringify([]));
   };
+
   const handleClickNota = (index) => {
+    setIsSelected({ status: true, noteSelected: index });
     setInputsState({
       title: notas[index].title,
       date: notas[index].date,
       note: notas[index].note,
     });
+  };
+
+  const handleClickActualizar = () => {
+    let listaModificada = notas;
+    listaModificada[isSelected.noteSelected] = inputsState;
+    console.log(isSelected);
+    setNotas(listaModificada);
+    localStorage.setItem("notas", JSON.stringify(listaModificada));
+    handleClickLimpiar();
+    setIsSelected({ status: false, noteSelected: null });
   };
 
   return (
@@ -60,7 +80,11 @@ const App = () => {
             <ul>
               {notas.map((nota, index) => {
                 return (
-                  <li onClick={() => handleClickNota(index)} key={index}>
+                  <li
+                    onClick={() => handleClickNota(index)}
+                    key={index}
+                    style={{ cursor: "pointer" }}
+                  >
                     {nota.title} ({nota.date})&nbsp;
                     <i
                       className="bi-x-circle"
@@ -127,7 +151,7 @@ const App = () => {
             <span className="col">
               <button
                 type="button"
-                className="btn btn-primary me-2"
+                className="btn btn-primary"
                 onClick={handleClickLimpiar}
                 style={{ width: "100%" }}
                 disabled={
@@ -139,10 +163,28 @@ const App = () => {
                 Limpiar
               </button>
             </span>
+            {isSelected.status && (
+              <span className="col">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleClickActualizar}
+                  style={{ width: "100%" }}
+                  disabled={
+                    inputsState.title === "" ||
+                    inputsState.date === "" ||
+                    inputsState.note === ""
+                  }
+                >
+                  Actualizar
+                </button>
+              </span>
+            )}
+
             <span className="col">
               <button
                 type="button"
-                className="btn btn-primary me-2"
+                className="btn btn-primary"
                 onClick={handleClickGuardar}
                 style={{ width: "100%" }}
                 disabled={
@@ -152,7 +194,7 @@ const App = () => {
                 }
               >
                 Guardar
-              </button>{" "}
+              </button>
             </span>
           </div>
         </div>
