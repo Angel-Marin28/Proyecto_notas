@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Lista from "./Lista";
+import Formulario from "./Formulario";
 
 const App = () => {
   //hook -> use .....
@@ -73,80 +75,18 @@ const App = () => {
     <div className="App container">
       <div className="row">
         <div className="col">
-          <h3>Lista</h3>
-          {notas.length === 0 ? (
-            <p>No hay notas capturadas.</p>
-          ) : (
-            <ul>
-              {notas.map((nota, index) => {
-                return (
-                  <li
-                    onClick={() => handleClickNota(index)}
-                    key={index}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {nota.title} ({nota.date})&nbsp;
-                    <i
-                      className="bi-x-circle"
-                      onClick={() => handleRemoveNote(index)}
-                      style={{
-                        color: "red",
-                        cursor: "pointer",
-                        fontSize: "0.75rem",
-                      }}
-                    ></i>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleClickLimpiarLista}
-            disabled={notas.length === 0}
-          >
-            Limpiar lista
-          </button>
+          <Lista
+            notas={notas}
+            handleClickNota={handleClickNota}
+            handleRemoveNote={handleRemoveNote}
+            handleClickLimpiarLista={handleClickLimpiarLista}
+          />
         </div>
         <div className="col">
-          <h3>Notas</h3>
-          <label className="mb-2" style={{ width: "100%" }}>
-            Titulo
-            <input
-              id="title"
-              name="title"
-              type="text"
-              onChange={handleInputChange}
-              value={inputsState.title}
-              style={{ width: "100%" }}
-            />
-          </label>
-          <br />
-          <label className="mb-2" style={{ width: "100%" }}>
-            Fecha
-            <input
-              id="date"
-              name="date"
-              type="date"
-              onChange={handleInputChange}
-              value={inputsState.date}
-              style={{ width: "100%" }}
-            />
-          </label>
-          <br />
-          <label style={{ width: "100%" }}>
-            Nota
-            <textarea
-              id="note"
-              name="note"
-              onChange={handleInputChange}
-              value={inputsState.note}
-              style={{ width: "100%" }}
-            />
-          </label>
-          <hr />
+          <Formulario
+            handleInputChange={handleInputChange}
+            inputsState={inputsState}
+          />
           <div className="row">
             <span className="col">
               <button
